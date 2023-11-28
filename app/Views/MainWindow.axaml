@@ -1,20 +1,58 @@
 <Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:app.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="app.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="app">
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:viewModels="clr-namespace:Dynafx.ViewModels"
+		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
+		x:Class="Dynafx.Views.MainWindow"
+		x:DataType="viewModels:MainWindowViewModel"
+		Icon="/Assets/avalonia-logo.ico"
+		Title="dynafx">
+	<Design.DataContext>
+		<viewModels:MainWindowViewModel />
+	</Design.DataContext>
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+	<Grid RowDefinitions="Auto,Auto,*,Auto" ColumnDefinitions="*,*">
+		<TextBlock Grid.Row="0" Grid.Column="0" Text="Input Device:" Margin="10,10,5,0" />
+		<TextBlock Grid.Row="0" Grid.Column="1" Text="Output Device:" Margin="5,10,10,0" />
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		<ComboBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Margin="10,5,5,10" />
+		<ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5,5,10,10" />
 
+		<WrapPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10,10">
+			<Border CornerRadius="5" BorderBrush="{DynamicResource ComboBoxBorderBrush}" BorderThickness="1" Padding="5">
+				<StackPanel>
+					<Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}" Margin="5,-22,0,0" HorizontalAlignment="Left">
+						<CheckBox Content="Echo" IsChecked="{Binding Echo}" />
+					</Border>
+					<Grid RowDefinitions="Auto,*,Auto,Auto" ColumnDefinitions="Auto,Auto,Auto,Auto" Height="300">
+						<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding EchoMixStr}" TextAlignment="Center" HorizontalAlignment="Center" />
+						<TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding EchoFeedbackStr}" TextAlignment="Center" HorizontalAlignment="Center" />
+						<TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding EchoLeftDelayStr}" TextAlignment="Center" HorizontalAlignment="Center" />
+						<TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding EchoRightDelayStr}" TextAlignment="Center" HorizontalAlignment="Center" />
+
+						<Slider Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Orientation="Vertical" Margin="2" Minimum="0" Maximum="100" Value="{Binding EchoMix}" />
+						<Slider Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Orientation="Vertical" Margin="2" Minimum="0" Maximum="100" Value="{Binding EchoFeedback}" />
+						<Slider Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center" Orientation="Vertical" Margin="2" Minimum="1" Maximum="2000" Value="{Binding EchoLeftDelay}" />
+						<Slider Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" Orientation="Vertical" Margin="2" Minimum="1" Maximum="2000" Value="{Binding EchoRightDelay}" />
+
+						<TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,5,0,0" Text="Mix" />
+						<TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,5,0,0" Text="Feedback" />
+						<TextBlock Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,5,0,0" Text="Left&#x0a;Delay" />
+						<TextBlock Grid.Row="2" Grid.Column="3" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,5,0,0" Text="Right&#x0a;Delay" />
+
+						<CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" IsChecked="{Binding EchoPanDelay}" Content="Pan Delay" VerticalAlignment="Center" HorizontalAlignment="Center" />
+						<CheckBox Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" IsChecked="{Binding EchoLockDelay}" Content="Lock" VerticalAlignment="Center" HorizontalAlignment="Center" />
+					</Grid>
+				</StackPanel>
+			</Border>
+		</WrapPanel>
+
+		<Button
+			Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+			Content="{Binding StartStopButtonText}"
+			Margin="10" Padding="10" MinWidth="200"
+			HorizontalAlignment="Center" HorizontalContentAlignment="Center"
+			Click="StartStopButtonOnClicked" />
+	</Grid>
 </Window>
