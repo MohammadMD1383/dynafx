@@ -23,4 +23,11 @@
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.5" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.5" />
   </ItemGroup>
+
+
+  <ItemGroup>
+    <Reference Include="Bass.Net">
+      <HintPath>Libs\Bass.Net.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
