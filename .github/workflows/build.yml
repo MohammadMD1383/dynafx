@@ -25,7 +25,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.2
-        
+
+      - name: Setup GCC
+        uses: egor-tensin/setup-gcc@v1
+        with:
+          version: latest
+          platform: x64
+        if: ${{ matrix.os.platform == 'linux' }}
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x86
+        if: ${{ matrix.os.platform == 'windows' }}
+
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
