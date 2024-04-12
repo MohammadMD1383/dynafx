@@ -17,17 +17,33 @@ ApplicationWindow {
 		onClicked: {
 			soundLooper.toggle();
 		}
+	}
+	
+	Label {
+		id: outputDeviceLabel
+		anchors.horizontalCenter: parent.horizontalCenter
+		anchors.top: btn.bottom
+	}
+	
+	Label {
+		id: inputDeviceLabel
+		anchors.horizontalCenter: parent.horizontalCenter
+		anchors.top: outputDeviceLabel.bottom
+	}
+	
+	Connections {
+		target: soundLooper
 		
-		Connections {
-			target: soundLooper
-			
-			function onStarted() {
-				btn.text = "Stop";
-			}
-			
-			function onStopped() {
-				btn.text = "Start";
-			}
+		function onStarted() {
+			btn.text = "Stop";
+			outputDeviceLabel.text = `Output Device: ${soundLooper.getOutputDeviceName()}`;
+			inputDeviceLabel.text = `Input Device: ${soundLooper.getInputDeviceName()}`;
+		}
+		
+		function onStopped() {
+			btn.text = "Start";
+			outputDeviceLabel.text = '';
+			inputDeviceLabel.text = '';
 		}
 	}
 }

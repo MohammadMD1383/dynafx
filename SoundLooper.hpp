@@ -24,6 +24,22 @@ public:
 		return running;
 	}
 
+	[[nodiscard]]
+	Q_INVOKABLE QString getOutputDeviceName() const {
+		BASS_DEVICEINFO deviceinfo;
+		const auto device = BASS_GetDevice();
+		BASS_GetDeviceInfo(device, &deviceinfo);
+		return deviceinfo.name;
+	}
+
+	[[nodiscard]]
+	Q_INVOKABLE QString getInputDeviceName() const {
+		BASS_DEVICEINFO deviceinfo;
+		const auto device = BASS_RecordGetDevice();
+		BASS_RecordGetDeviceInfo(device, &deviceinfo);
+		return deviceinfo.name;
+	}
+
 	static DWORD streamRecordProc(HSTREAM, void* buffer, const DWORD length, void* user) {
 		const auto _this = static_cast<SoundLooper *>(user);
 		return BASS_ChannelGetData(_this->recording, buffer, length);
