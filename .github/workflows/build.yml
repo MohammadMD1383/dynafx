@@ -53,7 +53,7 @@ jobs:
       - name: Cmake
         run: |
           mkdir build
-          cmake -DCMAKE_BUILD_TYPE=Release -G Ninja -B build
+          cmake -DCMAKE_PREFIX_PATH=${QT_ROOT_DIR}/lib/cmake -DCMAKE_BUILD_TYPE=Release -G Ninja -B build
           
       - name: Ninja
         run: |
