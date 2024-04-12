@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: 
+    branches:
       - next
   workflow_dispatch:
 
@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: 
+        os:
           - runner: ubuntu-latest
             platform: linux
             arch: linux_gcc_64
@@ -20,7 +20,7 @@ jobs:
           - runner: macos-latest
             platform: mac
             arch: clang_64
-          
+
     runs-on: ${{ matrix.os.runner }}
     steps:
       - name: Checkout
@@ -49,12 +49,17 @@ jobs:
           cache: true
           setup-python: false
           tools: 'tools_cmake tools_ninja'
-          
+
+      - name: Setup env for windows
+        run: |
+          echo "Qt6_DIR=$env:Qt6_DIR" >> $GITHUB_ENV
+        if: ${{ matrix.os.platform == 'windows' }}
+
       - name: Cmake
         run: |
           mkdir build
-          cmake -DCMAKE_PREFIX_PATH=${QT_ROOT_DIR}/lib/cmake -DCMAKE_BUILD_TYPE=Release -G Ninja -B build
-          
+          cmake -DCMAKE_PREFIX_PATH=${Qt6_DIR}/lib/cmake -DCMAKE_BUILD_TYPE=Release -G Ninja -B build
+
       - name: Ninja
         run: |
           cd build
