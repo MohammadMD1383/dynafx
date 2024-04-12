@@ -1,0 +1,48 @@
+name: Build
+
+on:
+  push:
+    branches: 
+      - next
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: 
+          - runner: ubuntu-latest
+            platform: linux
+            arch: linux_gcc_64
+          - runner: windows-latest
+            platform: windows
+            arch: win64_msvc2019_64
+          - runner: macos-latest
+            platform: mac
+            arch: clang_64
+          
+    runs-on: ${{ matrix.os.runner }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.2
+        
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: 6.7.0
+          host: ${{ matrix.os.platform }}
+          target: desktop
+          arch: ${{ matrix.os.arch }}
+          cache: true
+          setup-python: false
+          tools: 'tools_cmake tools_ninja'
+          
+      - name: Cmake
+        run: |
+          mkdir build
+          cmake -DCMAKE_BUILD_TYPE=Release -G Ninja -B build
+          
+      - name: Ninja
+        run: |
+          cd build
+          ninja
