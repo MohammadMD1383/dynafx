@@ -14,7 +14,14 @@ find_package(Qt6 COMPONENTS
 	REQUIRED)
 
 include_directories(lib/include)
-link_directories(lib)
+
+if (UNIX AND NOT APPLE)
+	link_directories(lib/linux)
+elseif (WIN32)
+	link_directories(lib/windows)
+elseif (APPLE)
+	link_directories(lib/macos)
+endif ()
 
 qt_add_executable(dynafx++
 	main.cpp
