@@ -37,6 +37,12 @@ jobs:
           arch: x64
         if: ${{ matrix.os.platform == 'windows' }}
 
+      - name: Setup Clang
+        uses: ConorMacBride/install-package@v1.1.0
+        with:
+          brew: llvm ninja
+        if: ${{ matrix.os.platform == 'mac' }}
+
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
