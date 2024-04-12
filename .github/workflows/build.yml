@@ -58,7 +58,7 @@ jobs:
       - name: Cmake
         run: |
           mkdir build
-          cmake -DCMAKE_PREFIX_PATH=${Qt6_DIR}/lib/cmake -DCMAKE_BUILD_TYPE=Release -G Ninja -B build
+          cmake -DCMAKE_PREFIX_PATH="${Qt6_DIR}/lib/cmake" -DCMAKE_BUILD_TYPE=Release -G Ninja -B build
 
       - name: Ninja
         run: |
