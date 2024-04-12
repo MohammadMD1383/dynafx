@@ -36,7 +36,7 @@ jobs:
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
         with:
-          arch: x86
+          arch: x64
         if: ${{ matrix.os.platform == 'windows' }}
 
       - name: Install Qt
