@@ -28,7 +28,7 @@ jobs:
 
       - name: Setup GCC
         run: |
-          apt install build-essential ninja-build
+          sudo apt install build-essential ninja-build
         if: ${{ matrix.os.platform == 'linux' }}
 
       - name: Setup MSVC
