@@ -13,7 +13,7 @@ jobs:
         os:
           - runner: ubuntu-latest
             platform: linux
-            arch: linux_gcc_64
+            arch: gcc_64
           - runner: windows-latest
             platform: windows
             arch: win64_msvc2019_64
@@ -42,8 +42,7 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
-          version: 6.7.0
-          aqtversion: '==3.1.13.dev3'
+          version: 6.6.3
           host: ${{ matrix.os.platform }}
           target: desktop
           arch: ${{ matrix.os.arch }}
