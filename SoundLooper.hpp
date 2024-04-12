@@ -4,12 +4,19 @@
 #include <QObject>
 #include <bass.h>
 
-class SoundLooper : public QObject {
+class SoundLooper final : public QObject {
 	Q_OBJECT
+	Q_PROPERTY(bool running READ isRunning NOTIFY runningStateChanged)
 
 	bool running{};
 	HRECORD recording{};
 	HSTREAM stream{};
+
+	void setRunning(const bool b) {
+		running = b;
+		emit runningStateChanged(b);
+		b ? emit started() : emit stopped();
+	}
 
 public:
 	[[nodiscard]]
@@ -17,7 +24,7 @@ public:
 		return running;
 	}
 
-	static DWORD streamRecordProc(HSTREAM handle, void* buffer, DWORD length, void* user) {
+	static DWORD streamRecordProc(HSTREAM, void* buffer, const DWORD length, void* user) {
 		const auto _this = static_cast<SoundLooper *>(user);
 		return BASS_ChannelGetData(_this->recording, buffer, length);
 	}
@@ -43,15 +50,24 @@ public:
 		constexpr BASS_DX8_ECHO echoParams{50, 20, 565, 565, false};
 		const auto echoEffect = BASS_ChannelSetFX(stream, BASS_FX_DX8_ECHO, 0);
 		BASS_FXSetParameters(echoEffect, &echoParams);
-		running = true;
+		setRunning(true);
 	}
 
 	Q_INVOKABLE void stop() {
 		BASS_ChannelFree(stream);
 		BASS_RecordFree();
 		BASS_Free();
-		running = false;
+		setRunning(false);
 	}
+
+	Q_INVOKABLE void toggle() {
+		running ? stop() : start();
+	}
+
+signals:
+	void runningStateChanged(bool isRunning);
+	void started();
+	void stopped();
 };
 
 #endif

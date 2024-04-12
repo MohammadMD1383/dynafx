@@ -10,13 +10,24 @@ ApplicationWindow {
 	visible: true
 	
 	Button {
-		text: soundLooper.isRunning() ? "Stop" : "Start"
+		id: btn
+		text: "Start"
 		anchors.centerIn: parent
+		
 		onClicked: {
-			if (soundLooper.isRunning())
-				soundLooper.stop();
-			else
-				soundLooper.start();
+			soundLooper.toggle();
+		}
+		
+		Connections {
+			target: soundLooper
+			
+			function onStarted() {
+				btn.text = "Stop";
+			}
+			
+			function onStopped() {
+				btn.text = "Start";
+			}
 		}
 	}
 }
