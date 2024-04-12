@@ -1,9 +1,14 @@
 name: Build
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
       - next
+    tags:
+      - 'v*.*.*'
   workflow_dispatch:
 
 jobs:
@@ -14,12 +19,15 @@ jobs:
           - runner: ubuntu-latest
             platform: linux
             arch: gcc_64
+            exeSuffix: ''
           - runner: windows-latest
             platform: windows
             arch: win64_msvc2019_64
+            exeSuffix: '.exe'
           - runner: macos-latest
             platform: mac
             arch: clang_64
+            exeSuffix: ''
 
     runs-on: ${{ matrix.os.runner }}
     steps:
@@ -68,3 +76,11 @@ jobs:
         run: |
           cd build
           ninja
+
+      - name: Upload Artifacts
+        uses: svenstaro/upload-release-action@2.9.0
+        with:
+          file: build/dynafx${{ matrix.os.exeSuffix }}
+          asset_name: dynafx-${{ matrix.os.platform }}${{ matrix.os.exeSuffix }}
+
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
