@@ -1,5 +1,7 @@
 <RCC>
-	<qresource prefix="/qml/">
-		<file>main.qml</file>
-	</qresource>
+    <qresource prefix="/qml">
+        <file>main.qml</file>
+        <file>EffectSlider.qml</file>
+        <file>EffectControl.qml</file>
+    </qresource>
 </RCC>
